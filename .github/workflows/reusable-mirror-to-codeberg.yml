@@ -1,0 +1,38 @@
+name: Mirror to Codeberg (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      codeberg-repo-name:
+        description: "Target repo name on Codeberg (defaults to calling repo name)"
+        required: false
+        type: string
+    secrets:
+      CODEBERG_USER:
+        required: true
+      CODEBERG_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - name: Mirror GitHub -> Codeberg
+        env:
+          CODEBERG_USER: ${{ secrets.CODEBERG_USER }}
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPO: ${{ inputs.codeberg-repo-name || github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          git clone --mirror "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo.git
+          cd repo.git
+          git for-each-ref --format='delete %(refname)' refs/pull \
+            | git update-ref --stdin
+          git -c "credential.helper=" \
+              -c "credential.helper=!f() { echo username=\"$CODEBERG_USER\"; echo password=\"$CODEBERG_TOKEN\"; }; f" \
+              push --mirror "https://codeberg.org/AlsheikhMedia/${TARGET_REPO}.git"
