@@ -1,21 +1,38 @@
+# Reusable Codeberg mirror workflow
+# Call from any repo:
+#   uses: AlsheikhMedia/.github/.github/workflows/codeberg-mirror.yml@main
+# Required secrets (must be set in the calling repo or org level):
+#   CODEBERG_TOKEN — a Codeberg personal access token with repo write scope
+# The mirror target is always: https://codeberg.org/AlsheikhMedia/{repo-name}
+# The repo must already exist on Codeberg before the first push.
 name: Mirror to Codeberg
 
 on:
-  push:
-    branches: ["**"]
-    tags: ["**"]
-  delete:
+  workflow_call:
+    secrets:
+      CODEBERG_TOKEN:
+        description: "Codeberg personal access token with repo write scope"
+        required: true
 
 jobs:
   mirror:
+    name: Push mirror to Codeberg
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
-      - name: Checkout with full history
-        uses: actions/checkout@v4
+      - name: Checkout (full history for mirror)
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0
 
-      - name: Mirror to Codeberg
+      - name: Push mirror to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          ORG: AlsheikhMedia
         run: |
-          git remote add codeberg "https://HassanAlsheikh:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/AlsheikhMedia/${{ github.event.repository.name }}.git"
-          git push --mirror codeberg
+          git remote add codeberg \
+            "https://${ORG}:${CODEBERG_TOKEN}@codeberg.org/${ORG}/${REPO_NAME}.git"
+          git push codeberg --mirror
