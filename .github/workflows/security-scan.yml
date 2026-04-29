@@ -1,0 +1,64 @@
+# Reusable security scan workflow — gitleaks (secrets) + Trivy (CVEs)
+# Call from any repo:
+#   uses: AlsheikhMedia/.github/.github/workflows/security-scan.yml@main
+# Results upload to GitHub Security tab via SARIF (requires security-events write).
+# Scan fails the job on: gitleaks found a secret, Trivy found HIGH/CRITICAL CVE.
+name: Security Scan
+
+on:
+  workflow_call:
+    inputs:
+      trivy-severity:
+        description: "Comma-separated Trivy severity levels that fail the build"
+        type: string
+        default: "HIGH,CRITICAL"
+      scan-path:
+        description: "Filesystem path to scan with Trivy (relative to repo root)"
+        type: string
+        default: "."
+
+jobs:
+  gitleaks:
+    name: Secret detection (gitleaks)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  trivy:
+    name: Vulnerability scan (Trivy)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: "fs"
+          scan-ref: ${{ inputs.scan-path }}
+          severity: ${{ inputs.trivy-severity }}
+          format: "sarif"
+          output: "trivy-results.sarif"
+          exit-code: "1"
+
+      - name: Upload Trivy SARIF to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"

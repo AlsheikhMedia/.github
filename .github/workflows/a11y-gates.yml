@@ -1,0 +1,68 @@
+# Reusable accessibility gates workflow — axe-core via @axe-core/cli
+# Call from any repo:
+#   uses: AlsheikhMedia/.github/.github/workflows/a11y-gates.yml@main
+# Inputs:
+#   base-url    — the URL to scan (e.g. http://localhost:4321 for a dev server,
+#                 or a staging URL for a deployed site)
+#   paths       — newline-separated list of paths to scan, relative to base-url
+#   wcag-tags   — axe-core rule tags to enforce (default: wcag2a,wcag2aa,wcag21aa)
+name: Accessibility Gates
+
+on:
+  workflow_call:
+    inputs:
+      base-url:
+        description: "Base URL of the site to scan"
+        type: string
+        required: true
+      paths:
+        description: "Newline-separated list of paths to scan (e.g. /\\n/blog\\n/about)"
+        type: string
+        default: "/"
+      wcag-tags:
+        description: "Comma-separated axe-core rule tags"
+        type: string
+        default: "wcag2a,wcag2aa,wcag21aa"
+      node-version:
+        description: "Node.js version for axe-core CLI"
+        type: string
+        default: "22"
+
+jobs:
+  a11y:
+    name: Axe-core accessibility scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install axe-core CLI
+        run: npm install -g @axe-core/cli
+
+      - name: Run axe on each path
+        env:
+          BASE_URL: ${{ inputs.base-url }}
+          PATHS: ${{ inputs.paths }}
+          WCAG_TAGS: ${{ inputs.wcag-tags }}
+        run: |
+          set -euo pipefail
+          FAILED=0
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            url="${BASE_URL}${path}"
+            echo "::group::axe scan — $url"
+            axe "$url" --tags "$WCAG_TAGS" --reporter spec || FAILED=1
+            echo "::endgroup::"
+          done <<< "$PATHS"
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::One or more axe-core scans found accessibility violations."
+            exit 1
+          fi

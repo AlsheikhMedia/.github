@@ -1,0 +1,71 @@
+# Reusable CI base workflow — install, lint, typecheck, test
+# Call from any repo:
+#   uses: AlsheikhMedia/.github/.github/workflows/ci-base.yml@main
+# Inputs: node-version (default 22), working-directory (default .)
+# Secrets: inherit (caller must pass needed secrets or mark secrets: inherit)
+name: CI Base
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version to use"
+        type: string
+        default: "22"
+      working-directory:
+        description: "Directory containing package.json"
+        type: string
+        default: "."
+      run-lint:
+        description: "Run lint step"
+        type: boolean
+        default: true
+      run-typecheck:
+        description: "Run typecheck step"
+        type: boolean
+        default: true
+      run-test:
+        description: "Run test step"
+        type: boolean
+        default: true
+
+jobs:
+  ci:
+    name: Install / Lint / Typecheck / Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+
+      - name: Verify lockfile integrity
+        working-directory: ${{ inputs.working-directory }}
+        run: npm ci --dry-run
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: npm ci
+
+      - name: Lint
+        if: inputs.run-lint
+        working-directory: ${{ inputs.working-directory }}
+        run: npm run lint --if-present
+
+      - name: Typecheck
+        if: inputs.run-typecheck
+        working-directory: ${{ inputs.working-directory }}
+        run: npm run typecheck --if-present
+
+      - name: Test
+        if: inputs.run-test
+        working-directory: ${{ inputs.working-directory }}
+        run: npm test --if-present
