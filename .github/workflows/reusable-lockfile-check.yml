@@ -1,0 +1,40 @@
+name: Lockfile integrity check (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version"
+        required: false
+        type: string
+        default: "22"
+      working-directory:
+        description: "Directory containing package.json and package-lock.json"
+        required: false
+        type: string
+        default: "."
+
+permissions:
+  contents: read
+
+jobs:
+  lockfile-check:
+    name: Lockfile integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+
+      - name: Verify lockfile is in sync
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          echo "Checking package-lock.json is in sync with package.json..."
+          npm ci --dry-run
+          echo "✓ Lockfile is in sync"

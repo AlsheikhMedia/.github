@@ -1,0 +1,68 @@
+name: Security — Node.js SAST + dependency audit (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version"
+        required: false
+        type: string
+        default: "22"
+      working-directory:
+        description: "Directory containing package.json"
+        required: false
+        type: string
+        default: "."
+      semgrep-paths:
+        description: "Paths to scan with Semgrep (space-separated)"
+        required: false
+        type: string
+        default: "."
+      audit-level:
+        description: "npm audit severity threshold"
+        required: false
+        type: string
+        default: "high"
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+
+      - name: Lockfile integrity check
+        working-directory: ${{ inputs.working-directory }}
+        run: npm ci --dry-run
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: npm ci
+
+      - name: Semgrep SAST (blocking)
+        run: |
+          pip install semgrep -q
+          semgrep scan \
+            --config p/javascript \
+            --config p/typescript \
+            --metrics=off \
+            --error \
+            --severity ERROR \
+            ${{ inputs.semgrep-paths }}
+
+      - name: Dependency audit — npm (blocking on ${{ inputs.audit-level }}+)
+        working-directory: ${{ inputs.working-directory }}
+        run: npm audit --audit-level=${{ inputs.audit-level }}
