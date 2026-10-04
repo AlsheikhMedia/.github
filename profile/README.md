@@ -2,118 +2,48 @@
 
 <br>
 
-<div dir="rtl">
+# Media × Tech
 
-# الشيخ ميديا
+### We build tools that create digital jobs.
 
-### نبني أدوات رقمية أولاً بالعربية
-#### للمبدعين والمعلمين والمجتمعات الناطقة بالعربية
-
-</div>
+**Alsheikh Media** — a media and technology company based in the UAE.
 
 <br>
 
-# Alsheikh Media
-
-**Arabic-first digital tools for creators, educators, and communities**
-
-<br>
-
-[![Website](https://img.shields.io/badge/الموقع-alsheikhmedia.com-0077B5?style=for-the-badge)](https://alsheikhmedia.com)
-[![X](https://img.shields.io/badge/تابعنا-@AlsheikhMedia-000000?style=for-the-badge&logo=x)](https://x.com/AlsheikhMedia)
-[![Email](https://img.shields.io/badge/تواصل_معنا-info@alsheikhmedia.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:info@alsheikhmedia.com)
+[![Website](https://img.shields.io/badge/Website-alsheikhmedia.com-0077B5?style=for-the-badge)](https://alsheikhmedia.com)
+[![X](https://img.shields.io/badge/X-@AlsheikhMedia-000000?style=for-the-badge&logo=x)](https://x.com/AlsheikhMedia)
+[![Email](https://img.shields.io/badge/Email-info@alsheikhmedia.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:info@alsheikhmedia.com)
 
 </div>
 
 ---
 
-<table>
-<tr>
-<td width="50%" align="right">
-<div dir="rtl">
+## What we do
 
-## من نحن
+We build software that creates real jobs and opens up work to people who couldn't reach it before.
 
-الشيخ ميديا مختبر رقمي وإعلامي مقره الإمارات العربية المتحدة. نبني برمجيات للمبدعين والمعلمين والمجتمعات الناطقة بالعربية.
+**[The marketplace](https://alsheikhmedia.com).** A place where brands meet agencies and media talent — work for everyone, big or small. Coming soon at alsheikhmedia.com.
 
-نعمل عند تقاطع التكنولوجيا والثقافة — نصمم أدوات تحترم اللغة العربية والكتابة من اليمين إلى اليسار والمجتمعات التي تعتمد عليها.
+**Ghaseel.** Book a car wash or a laundry pickup. Anyone can sign up as a washer and earn on their own schedule. Omar needs extra cash: he creates an account, washes cars on weekends, and gets his jobs from the app.
 
-</div>
-</td>
-<td width="50%">
+**Helpyard.** The operating system for facility management.
 
-## Who We Are
-
-Alsheikh Media is a UAE-based media and digital lab building software for Arabic-speaking creators, educators, and communities.
-
-We work at the intersection of technology and culture — designing tools that respect the Arabic language, right-to-left script, and the people who use them.
-
-</td>
-</tr>
-</table>
+**gIMS.** AI-powered guest management for events and venues.
 
 ---
 
-## 🌟 منتجاتنا الرائدة | Flagship Products
+## What we give back
 
-<table>
-<tr>
-<td width="50%" align="right">
-<div dir="rtl">
-
-### 📺 التلبرومبتر العربي
-
-تطبيق تلبرومبتر احترافي لسطح المكتب، مصمم للمذيعين والصحفيين ومنشئي المحتوى العربي.
-
-دعم كامل للكتابة من اليمين إلى اليسار · تحكم سلس في السرعة · واجهة نظيفة للبث المباشر
-
-</div>
-</td>
-<td width="50%">
-
-### 📺 ArabicTeleprompter
-
-Professional desktop teleprompter for Arabic broadcasters, journalists, and content creators.
-
-Full RTL support · Smooth scroll control · Distraction-free for live & studio use
-
-</td>
-</tr>
-<tr>
-<td width="50%" align="right">
-<div dir="rtl">
-
-### 🎮 ألعاب الأطفال
-
-ألعاب تعليمية تفاعلية للأطفال العرب — ممتعة وذات جذور ثقافية وتعمل على أي جهاز.
-
-</div>
-</td>
-<td width="50%">
-
-### 🎮 Kids
-
-Interactive educational games for Arab children — culturally grounded, fun, and cross-platform.
-
-</td>
-</tr>
-</table>
+Where we can, education stays free. [Kids](https://kids.alsheikhmedia.com) — open, free educational games for Arab children.
 
 ---
 
-## 🛠️ ما نبني به | Built With
-
-![Svelte](https://img.shields.io/badge/Svelte-FF3E00?style=flat-square&logo=svelte&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Swift](https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=swift&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+Built with Rust, TypeScript, and WebAssembly.
 
 ---
 
 <div align="center">
-<div dir="rtl">
 
-📧 [info@alsheikhmedia.com](mailto:info@alsheikhmedia.com) &nbsp;·&nbsp; 🌐 [alsheikhmedia.com](https://alsheikhmedia.com) &nbsp;·&nbsp; 𝕏 [@AlsheikhMedia](https://x.com/AlsheikhMedia)
+[info@alsheikhmedia.com](mailto:info@alsheikhmedia.com) &nbsp;·&nbsp; [alsheikhmedia.com](https://alsheikhmedia.com) &nbsp;·&nbsp; [@AlsheikhMedia](https://x.com/AlsheikhMedia)
 
-</div>
 </div>
