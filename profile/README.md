@@ -24,7 +24,7 @@ We build software that creates real jobs and opens up work to people who couldn'
 
 **[The marketplace](https://alsheikhmedia.com).** A place where brands meet agencies and media talent — work for everyone, big or small. Coming soon at alsheikhmedia.com.
 
-**Ghaseel.** Book a car wash or a laundry pickup. Anyone can sign up as a washer and earn on their own schedule. Omar needs extra cash: he creates an account, washes cars on weekends, and gets his jobs from the app.
+**Ghaseel.** Book a car wash or a laundry pickup. Anyone can sign up as a washer and earn on their own schedule.
 
 **Helpyard.** The operating system for facility management.
 
